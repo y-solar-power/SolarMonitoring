@@ -1,0 +1,71 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.0.0)
+set(toolchainVersion 13_2_Rel1)
+set(picotoolVersion 2.0.0)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.0.0)
+set(toolchainVersion 13_2_Rel1)
+set(picotoolVersion 2.0.0)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+cmake_minimum_required(VERSION 3.12)
+
+include(pico_sdk_import.cmake)
+set(PICO_EXTRAS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../pico-extras")
+include(pico_extras_import.cmake)
+
+project(SolarMonitoring C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+set(PICO_BOARD pico_w CACHE STRING "Board type")
+
+pico_sdk_init()
+
+include_directories(. FULLFEATURED_SRC)
+include_directories(./FatFs/ FULLFEATURED_SRC)
+include_directories(./Arducam/ FULLFEATURED_SRC)
+include_directories(./Arducam/Core/ FULLFEATURED_SRC)
+include_directories(./SHT31/ FULLFEATURED_SRC)
+include_directories(./RTC8564NB/ FULLFEATURED_SRC)
+include_directories(./LPS25HB/ FULLFEATURED_SRC)
+include_directories(./INA228/ FULLFEATURED_SRC)
+include_directories(./BNO055/ FULLFEATURED_SRC)
+include_directories(./Adc/ FULLFEATURED_SRC)
+
+aux_source_directory(. FULLFEATURED_SRC)
+aux_source_directory(./FatFs/ FULLFEATURED_SRC)
+aux_source_directory(./Arducam/ FULLFEATURED_SRC)
+aux_source_directory(./Arducam/Core/ FULLFEATURED_SRC)
+aux_source_directory(./SHT31/ FULLFEATURED_SRC)
+aux_source_directory(./RTC8564NB/ FULLFEATURED_SRC)
+aux_source_directory(./LPS25HB/ FULLFEATURED_SRC)
+aux_source_directory(./INA228/ FULLFEATURED_SRC)
+aux_source_directory(./BNO055/ FULLFEATURED_SRC)
+aux_source_directory(./Adc/ FULLFEATURED_SRC)
+
+add_executable(SolarMonitoring ${FULLFEATURED_SRC})
+
+target_link_libraries(SolarMonitoring pico_stdlib hardware_sleep hardware_spi hardware_i2c hardware_adc)
+
+pico_enable_stdio_usb(SolarMonitoring 1)
+pico_enable_stdio_uart(SolarMonitoring 0)
+pico_add_extra_outputs(SolarMonitoring)
+
